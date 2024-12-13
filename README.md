@@ -18,7 +18,7 @@ Working buttons:
 - Volume down
 - Search (opens Spotlight)
 - Shop (triggers F16 key press)
-- Sleep (hold down to show menu)
+- Sleep (triggers Lock)
 
 Unimplemented buttons:
 - Email 
@@ -41,15 +41,19 @@ There is a helper application bundled with the project, which can be run after t
 
 ## Appendix
 
-### Shop icon
+### Shop button
 
-The Shop icon has been set to trigger an F16 button press, which can be used in apps like Shortcuts to trigger an action, such as opening a web browser.
+The Shop button has been set to trigger an F16 button press, which can be used in apps like Shortcuts to trigger an action, such as opening a web browser.
 
 ![Keyboard](img/shortcut.png)
 
-### Stock keyboard mapping
+### Sleep button
 
-These are the HID descriptors of the keys before the driver is applied. All keys use a HID usage page of `kHIDPage_Consumer`, except for the re-mapped `Shop` key using `kHIDPage_KeyboardOrKeypad` to simulate a standard key press.
+The Sleep button triggers a system lock using the `kHIDUsage_Csmr_ALTerminalLockOrScreensaver` usage, as the original value of `kHIDUsage_GD_SystemSleep` only triggered some of the time. It also only showed a dialog asking whether to sleep/restart/shutdown rather than sleeping straight away.
+
+### HID keyboard mappings
+
+These are the HID descriptors of the keys before the driver is applied. All keys use a HID usage page of `kHIDPage_Consumer`, except for the re-mapped `Shop` key using `kHIDPage_KeyboardOrKeypad` to simulate a standard key press, or the `Sleep` button which is re-mapped from `kHIDPage_GeneralDesktop` to `kHIDPage_Consumer` to support the Lock action.
 
 Any blank keys don't have an applicable HID descriptor, and I haven't figured out a nice way of getting a USB-PS/2 adapter working for those keys.
 
@@ -73,7 +77,7 @@ Any blank keys don't have an applicable HID descriptor, and I haven't figured ou
 | **Mute**                   | E0 20              | 0x0C               | 12          | 0xE7          | 231         | `kHIDUsage_Csmr_Loudness`          | `kHIDUsage_Csmr_Mute`            |
 | **VolDown**                | E0 2E              | 0x0C               | 12          | 0x153         | 339         | `kHIDUsage_Csmr_BassDecrement`     | `kHIDUsage_Csmr_VolumeDecrement` |
 | **VolUp**                  | E0 30              | 0x0C               | 12          | 0x152         | 338         | `kHIDUsage_Csmr_BassIncrement`     | `kHIDUsage_Csmr_VolumeIncrement` |
-| **Sleep**                  | E0 5F              | 0x01               | 1           | 0x82          | 130         | `kHIDUsage_GD_SystemSleep`         | `kHIDUsage_GD_SystemSleep`       |
+| **Sleep**                  | E0 5F              | 0x01               | 1           | 0x82          | 130         | `kHIDUsage_GD_SystemSleep`         | `kHIDUsage_Csmr_ALTerminalLockOrScreensaver`       |
 
 
 ## References

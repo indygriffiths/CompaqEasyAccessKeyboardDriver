@@ -127,6 +127,9 @@ bool CompaqEasyAccessKeyboardDriver::parseKeyboardElement(IOHIDElement *element)
         // Media keys are under this HID page
         os_log(OS_LOG_DEFAULT, "CompaqEasyAccessKeyboardDriver: confirmed consumer at usagePage: %i usage: %i", usagePage, usage);
         result = true;
+    } else if (usagePage == kHIDPage_GenericDesktop && usage == kHIDUsage_GD_SystemSleep) {
+        os_log(OS_LOG_DEFAULT, "CompaqEasyAccessKeyboardDriver: confirmed sleep at usagePage: %i usage: %i", usagePage, usage);
+        result = true;
     }
     
     if (!result) {
@@ -193,28 +196,32 @@ void CompaqEasyAccessKeyboardDriver::handleReport(uint64_t timestamp,
         //       usagePage, usage, value);
         
         switch (usage) {
-            case kHIDUsage_Csmr_Loudness:               // Mute button
+            case kHIDUsage_Csmr_Loudness:                           // Mute button
                 usage = kHIDUsage_Csmr_Mute;
                 break;
-            case kHIDUsage_Csmr_BassBoost:              // Play/pause button
-            case kHIDUsage_Csmr_Stop:                   // Stop button (no separate Stop usage key that macOS doesn't re-use for Mute)
+            case kHIDUsage_Csmr_BassBoost:                          // Play/pause button
+            case kHIDUsage_Csmr_Stop:                               // Stop button (no separate Stop usage key that macOS doesn't re-use for Mute)
                 usage = kHIDUsage_Csmr_PlayOrPause;
                 break;
-            case kHIDUsage_Csmr_ScanPreviousTrack:      // Previous trackbutton
+            case kHIDUsage_Csmr_ScanPreviousTrack:                  // Previous trackbutton
                 usage = kHIDUsage_Csmr_Rewind;
                 break;
-            case kHIDUsage_Csmr_ScanNextTrack:          // Next track button
+            case kHIDUsage_Csmr_ScanNextTrack:                      // Next track button
                 usage = kHIDUsage_Csmr_FastForward;
                 break;
-            case kHIDUsage_Csmr_BassIncrement:          // Volume up button
+            case kHIDUsage_Csmr_BassIncrement:                      // Volume up button
                 usage = kHIDUsage_Csmr_VolumeIncrement;
                 break;
-            case kHIDUsage_Csmr_BassDecrement:          // Volume down button
+            case kHIDUsage_Csmr_BassDecrement:                      // Volume down button
                 usage = kHIDUsage_Csmr_VolumeDecrement;
                 break;
-            case kHIDUsage_Csmr_ACForward:              // Shop button
+            case kHIDUsage_Csmr_ACForward:                          // Shop button
                 usagePage = kHIDPage_KeyboardOrKeypad;
                 usage = kHIDUsage_KeyboardF16;
+                break;
+            case kHIDUsage_GD_SystemSleep:                          // Sleep button
+                usagePage = kHIDPage_Consumer;
+                usage = kHIDUsage_Csmr_ALTerminalLockOrScreensaver;
                 break;
         }
         
