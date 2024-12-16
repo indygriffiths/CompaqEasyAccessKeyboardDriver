@@ -1,5 +1,8 @@
 # Compaq Easy Access Keyboard Driver
 
+> [!CAUTION]
+> This repo was mainly a proof of concept while adding in the HID usage codes to [Karabiner-Elements](https://github.com/pqrs-org/Karabiner-Elements), which should be used instead of this driver. No guarantees are made about the stability or security of this driver.
+
 A DriverKit project that re-maps certain Compaq media keys to their macOS equivalents, adapted from the [Apple sample code](https://developer.apple.com/documentation/hiddriverkit/handling_keyboard_events_from_a_human_interface_device)
 
 This came about after picking up a Compaq keyboard with various media keys. The keyboard works when used with a USB-PS/2 adapter, but several of the media keys don't work or perform the wrong action. This driver listens for events processed by that USB-PS/2 adapter and changes the event triggered by the key press to the correct one.
